@@ -10,6 +10,10 @@ import UIKit
 fileprivate let NIB_NAME = "NewsTableViewCell"
 fileprivate let CELL_ID = "newsCell"
 
+fileprivate enum TableSection: Int {
+    case topStories = 0, latestNews, total
+}
+
 class DailyNewsViewController: UIViewController {
     
     @IBOutlet private weak var dailyNewsTableView: UITableView!
@@ -35,14 +39,41 @@ extension DailyNewsViewController: UITableViewDelegate {
 
 extension DailyNewsViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.newsArray.count
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return TableSection.total.rawValue
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case TableSection.topStories.rawValue:
+            return 1
+        default:
+            return viewModel.newsArray.count
+        }
+    }
+    
+    // MARK: - TODO: Make custom view for header
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case TableSection.topStories.rawValue:
+            return "Top Stories"
+        case TableSection.latestNews.rawValue:
+            return "Latest News"
+        default:
+            return nil
+        }
+    }
+    
+    // MARK: - TODO: Make custom view for top story
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as! NewsTableViewCell
         
-        cell.newsLabel.text = viewModel.newsArray[indexPath.row]
+        switch indexPath.section {
+        case TableSection.topStories.rawValue:
+            cell.newsLabel.text = viewModel.topStory
+        default:
+            cell.newsLabel.text = viewModel.newsArray[indexPath.row]
+        }
         
         return cell
     }

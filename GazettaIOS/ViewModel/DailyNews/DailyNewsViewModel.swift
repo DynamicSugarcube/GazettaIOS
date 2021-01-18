@@ -8,6 +8,6 @@
 import Foundation
 
 struct DailyNewsViewModel {
-    
-    var newsArray: [String] = Array.init(repeating: "Breaking news", count: 20)
+    var topStory = "What happened today? Who knows?"
+    var newsArray = Array.init(repeating: "Breaking news", count: 20)
 }

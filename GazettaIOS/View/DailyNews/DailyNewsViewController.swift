@@ -7,24 +7,22 @@
 
 import UIKit
 
-fileprivate let NIB_NAME = "NewsTableViewCell"
-fileprivate let CELL_ID = "newsCell"
-
-fileprivate enum TableSection: Int {
-    case topStories = 0, latestNews, total
-}
-
 class DailyNewsViewController: UIViewController {
     
     @IBOutlet private weak var dailyNewsTableView: UITableView!
-    
-    private var viewModel = DailyNewsViewModel()
+        
+    private var topStoriesViewModel = TopStoriesViewModel()
+    private var latestNewsViewModel = LatestNewsViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let nib = UINib(nibName: NIB_NAME, bundle: nil)
-        dailyNewsTableView.register(nib, forCellReuseIdentifier: CELL_ID)
+        dailyNewsTableView.register(FeedSectionHeaderView.nib, forHeaderFooterViewReuseIdentifier: FeedSectionHeaderView.identifier)
+        
+        dailyNewsTableView.register(TopStoryTableViewCell.nib, forCellReuseIdentifier: TopStoryTableViewCell.identifier)
+        
+        dailyNewsTableView.register(LatestNewsTableViewCell.nib, forCellReuseIdentifier: LatestNewsTableViewCell.identifier)
+        
         dailyNewsTableView.delegate = self
         dailyNewsTableView.dataSource = self
     }
@@ -40,42 +38,58 @@ extension DailyNewsViewController: UITableViewDelegate {
 extension DailyNewsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return TableSection.total.rawValue
+        return TableSectionIdentifier.total.rawValue
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case TableSection.topStories.rawValue:
-            return 1
+        case topStoriesViewModel.sectionIdentifier:
+            return topStoriesViewModel.rowCount
+        case latestNewsViewModel.sectionIdentifier:
+            return latestNewsViewModel.rowCount
         default:
-            return viewModel.newsArray.count
+            return 0
         }
     }
     
-    // MARK: - TODO: Make custom view for header
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = dailyNewsTableView.dequeueReusableHeaderFooterView(withIdentifier: FeedSectionHeaderView.identifier) as! FeedSectionHeaderView
+        
         switch section {
-        case TableSection.topStories.rawValue:
-            return "Top Stories"
-        case TableSection.latestNews.rawValue:
-            return "Latest News"
+        case topStoriesViewModel.sectionIdentifier:
+            header.sectionLabel.text = topStoriesViewModel.sectionName
+            header.sectionButton.setTitle(topStoriesViewModel.sectionButtonName, for: .normal)
+        case latestNewsViewModel.sectionIdentifier:
+            header.sectionLabel.text = latestNewsViewModel.sectionName
+            header.sectionButton.setTitle(latestNewsViewModel.sectionButtonName, for: .normal)
         default:
             return nil
         }
+        
+        return header
     }
     
-    // MARK: - TODO: Make custom view for top story
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath) as! NewsTableViewCell
-        
         switch indexPath.section {
-        case TableSection.topStories.rawValue:
-            cell.newsLabel.text = viewModel.topStory
+        case topStoriesViewModel.sectionIdentifier:
+            let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
+            let news = topStoriesViewModel.currentTopStory
+            cell.newsLabel.text = news.label
+            cell.newsPublisherAndDateLabel.text = news.publisherAndDate
+            return cell
+        case latestNewsViewModel.sectionIdentifier:
+            let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
+            let news = latestNewsViewModel.dataSet[indexPath.row]
+            cell.newsLabel.text = news.label
+            cell.newsPublisherAndDateLabel.text = news.publisherAndDate
+            return cell
         default:
-            cell.newsLabel.text = viewModel.newsArray[indexPath.row]
+            return UITableViewCell()
         }
-        
-        return cell
     }
 }
 

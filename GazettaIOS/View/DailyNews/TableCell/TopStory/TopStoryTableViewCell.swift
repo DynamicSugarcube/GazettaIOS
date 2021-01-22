@@ -7,23 +7,11 @@
 
 import UIKit
 
-class TopStoryTableViewCell: UITableViewCell {
+class TopStoryTableViewCell: UITableViewCell, NewsTableViewCell {
     @IBOutlet weak var newsLabel: UILabel!
     @IBOutlet weak var newsImage: UIImageView!
     @IBOutlet weak var newsPublisherAndDateLabel: UILabel!
     @IBOutlet weak var newsPublisherImage: UIImageView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
 }
 
 extension TopStoryTableViewCell: TableCellProtocol {
@@ -34,5 +22,4 @@ extension TopStoryTableViewCell: TableCellProtocol {
     static var nib: UINib {
         return UINib(nibName: "TopStoryTableViewCell", bundle: nil)
     }
-    
 }

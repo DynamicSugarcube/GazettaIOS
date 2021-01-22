@@ -5,9 +5,10 @@
 //  Created by Vsevolod Sharov on 19.01.2021.
 //
 
-fileprivate let TOP_STORY_STUB = SingleNews(label: "What happened today? Who knows?", content: "Some long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long description", publisher: "BBC", when: "01.01.2020")
-
-struct TopStoriesViewModel: TableSectionViewModel {
+class TopStoriesViewModel: TableSectionViewModel {
+    // MARK: TODO Inject it
+    private let dataRetriever = NetworkDataRetrieverImpl()
+    
     var sectionIdentifier: Int {
         return TableSectionIdentifier.topStories.rawValue
     }
@@ -20,9 +21,25 @@ struct TopStoriesViewModel: TableSectionViewModel {
         return "More"
     }
     
-    var dataSet: [SingleNews] = [TOP_STORY_STUB]
+    var dataSet: [NewsArticle] = []
     
-    var currentTopStory: SingleNews {
-        return dataSet[0]
+    var currentTopStory: NewsArticle? {
+        if dataSet.isEmpty {
+            return nil
+        } else {
+            return dataSet[0]
+        }
+    }
+    
+    var rowCount: Int {
+        return 1
+    }
+    
+    func getData(onComplete: @escaping () -> Void) {
+        let request = TopStoriesRequest(country: .us)
+        dataRetriever.getNewsArticles(on: request) { [weak self] articles in
+            self?.dataSet = articles
+            onComplete()
+        }
     }
 }

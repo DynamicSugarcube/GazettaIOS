@@ -5,9 +5,10 @@
 //  Created by Vsevolod Sharov on 19.01.2021.
 //
 
-fileprivate let NEWS_ARRAY_STUB = Array.init(repeating: SingleNews(label: "Breaking news", content: "Something happened", publisher: "CNN", when: "03.01.2021"), count: 20)
-
-struct LatestNewsViewModel: TableSectionViewModel {
+class LatestNewsViewModel: TableSectionViewModel {
+    // MARK: TODO Inject it
+    private let dataRetriever = NetworkDataRetrieverImpl()
+    
     var sectionIdentifier: Int {
         return TableSectionIdentifier.latestNews.rawValue
     }
@@ -20,5 +21,14 @@ struct LatestNewsViewModel: TableSectionViewModel {
         return "See All"
     }
     
-    var dataSet: [SingleNews] = NEWS_ARRAY_STUB
+    var dataSet: [NewsArticle] = []
+    
+    func getData(onComplete: @escaping () -> Void) {
+        // MARK: TODO Change request to LatestNewsRequest when it's ready
+        let request = TopStoriesRequest(country: .us)
+        dataRetriever.getNewsArticles(on: request) { [weak self] articles in
+            self?.dataSet = articles
+            onComplete()
+        }
+    }
 }

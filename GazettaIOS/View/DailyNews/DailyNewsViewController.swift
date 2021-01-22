@@ -25,6 +25,14 @@ class DailyNewsViewController: UIViewController {
         
         dailyNewsTableView.delegate = self
         dailyNewsTableView.dataSource = self
+        
+        topStoriesViewModel.getData() { [unowned self] in
+            self.dailyNewsTableView.reloadSections(IndexSet(arrayLiteral: self.topStoriesViewModel.sectionIdentifier), with: .automatic)
+        }
+        
+        latestNewsViewModel.getData() { [unowned self] in
+            self.dailyNewsTableView.reloadSections(IndexSet(arrayLiteral: self.latestNewsViewModel.sectionIdentifier), with: .automatic)
+        }
     }
 }
 
@@ -77,15 +85,14 @@ extension DailyNewsViewController: UITableViewDataSource {
         switch indexPath.section {
         case topStoriesViewModel.sectionIdentifier:
             let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
-            let news = topStoriesViewModel.currentTopStory
-            cell.newsLabel.text = news.label
-            cell.newsPublisherAndDateLabel.text = news.publisherAndDate
+            if let news = topStoriesViewModel.currentTopStory {
+                cell.update(with: news)
+            }
             return cell
         case latestNewsViewModel.sectionIdentifier:
             let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
             let news = latestNewsViewModel.dataSet[indexPath.row]
-            cell.newsLabel.text = news.label
-            cell.newsPublisherAndDateLabel.text = news.publisherAndDate
+            cell.update(with: news)
             return cell
         default:
             return UITableViewCell()

@@ -6,8 +6,11 @@
 //
 
 class LatestNewsViewModel: TableSectionViewModel {
-    // MARK: TODO Inject it
-    private let dataRetriever = NetworkDataRetrieverImpl()
+    private var networkDataRetriever: NetworkDataRetriever
+    
+    init(networkDataRetriever: NetworkDataRetriever) {
+        self.networkDataRetriever = networkDataRetriever
+    }
     
     var sectionIdentifier: Int {
         return TableSectionIdentifier.latestNews.rawValue
@@ -26,7 +29,7 @@ class LatestNewsViewModel: TableSectionViewModel {
     func getData(onComplete: @escaping () -> Void) {
         // MARK: TODO Change request to LatestNewsRequest when it's ready
         let request = TopStoriesRequest(country: .us)
-        dataRetriever.getNewsArticles(on: request) { [weak self] articles in
+        networkDataRetriever.getNewsArticles(on: request) { [weak self] articles in
             self?.dataSet = articles
             onComplete()
         }

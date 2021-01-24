@@ -11,11 +11,14 @@ class DailyNewsViewController: UIViewController {
     
     @IBOutlet private weak var dailyNewsTableView: UITableView!
         
-    private var topStoriesViewModel = TopStoriesViewModel()
-    private var latestNewsViewModel = LatestNewsViewModel()
+    private var topStoriesViewModel: TopStoriesViewModel!
+    private var latestNewsViewModel: LatestNewsViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topStoriesViewModel = DependencyProvider.getTopStoriesViewModel()
+        latestNewsViewModel = DependencyProvider.getLatestNewsViewModel()
         
         dailyNewsTableView.register(FeedSectionHeaderView.nib, forHeaderFooterViewReuseIdentifier: FeedSectionHeaderView.identifier)
         

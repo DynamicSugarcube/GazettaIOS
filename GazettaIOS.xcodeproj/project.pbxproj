@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A92AC9C825BC754D00148C71 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = A92AC9C725BC754D00148C71 /* Swinject */; };
 		A932F3FE25B9A71A0080DE75 /* NetworkDataRetrieverImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932F3FD25B9A71A0080DE75 /* NetworkDataRetrieverImpl.swift */; };
 		A932F40325B9A8B60080DE75 /* DataRequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932F40225B9A8B60080DE75 /* DataRequestProtocol.swift */; };
 		A93D546125B81E8D004FC554 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A93D546025B81E8D004FC554 /* Alamofire */; };
@@ -35,6 +36,7 @@
 		A951116625B7108300B33DD7 /* TopStoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A951116525B7108300B33DD7 /* TopStoriesViewModel.swift */; };
 		A951116B25B711D100B33DD7 /* TableSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A951116A25B711D100B33DD7 /* TableSectionViewModel.swift */; };
 		A951117025B7131500B33DD7 /* LatestNewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A951116F25B7131500B33DD7 /* LatestNewsViewModel.swift */; };
+		A960C92125BD6186002C9C31 /* DependencyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A960C92025BD6186002C9C31 /* DependencyProvider.swift */; };
 		A9CADE1325B03CB50045EDBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CADE1225B03CB50045EDBB /* AppDelegate.swift */; };
 		A9CADE1525B03CB50045EDBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CADE1425B03CB50045EDBB /* SceneDelegate.swift */; };
 		A9CADE1725B03CB50045EDBB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CADE1625B03CB50045EDBB /* ViewController.swift */; };
@@ -90,6 +92,7 @@
 		A951116525B7108300B33DD7 /* TopStoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopStoriesViewModel.swift; sourceTree = "<group>"; };
 		A951116A25B711D100B33DD7 /* TableSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSectionViewModel.swift; sourceTree = "<group>"; };
 		A951116F25B7131500B33DD7 /* LatestNewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestNewsViewModel.swift; sourceTree = "<group>"; };
+		A960C92025BD6186002C9C31 /* DependencyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyProvider.swift; sourceTree = "<group>"; };
 		A9CADE0F25B03CB50045EDBB /* GazettaIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GazettaIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CADE1225B03CB50045EDBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9CADE1425B03CB50045EDBB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A93D546125B81E8D004FC554 /* Alamofire in Frameworks */,
+				A92AC9C825BC754D00148C71 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +136,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A92AC9CC25BC769E00148C71 /* Dependency */ = {
+			isa = PBXGroup;
+			children = (
+				A960C92025BD6186002C9C31 /* DependencyProvider.swift */,
+			);
+			path = Dependency;
+			sourceTree = "<group>";
+		};
 		A932F40725B9A94B0080DE75 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,6 +359,7 @@
 		A9CADE1125B03CB50045EDBB /* GazettaIOS */ = {
 			isa = PBXGroup;
 			children = (
+				A92AC9CC25BC769E00148C71 /* Dependency */,
 				A94C1A8D25B46EA700B5F946 /* System */,
 				A93D78DA25BAB51300C94854 /* Utils */,
 				A93D546525B82B7A004FC554 /* Service */,
@@ -405,6 +418,7 @@
 			name = GazettaIOS;
 			packageProductDependencies = (
 				A93D546025B81E8D004FC554 /* Alamofire */,
+				A92AC9C725BC754D00148C71 /* Swinject */,
 			);
 			productName = GazettaIOS;
 			productReference = A9CADE0F25B03CB50045EDBB /* GazettaIOS.app */;
@@ -479,6 +493,7 @@
 			mainGroup = A9CADE0625B03CB50045EDBB;
 			packageReferences = (
 				A93D545F25B81E8D004FC554 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				A92AC9C625BC754D00148C71 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			productRefGroup = A9CADE1025B03CB50045EDBB /* Products */;
 			projectDirPath = "";
@@ -539,6 +554,7 @@
 				A9CADE1325B03CB50045EDBB /* AppDelegate.swift in Sources */,
 				A951116625B7108300B33DD7 /* TopStoriesViewModel.swift in Sources */,
 				A9CADE1525B03CB50045EDBB /* SceneDelegate.swift in Sources */,
+				A960C92125BD6186002C9C31 /* DependencyProvider.swift in Sources */,
 				A951116B25B711D100B33DD7 /* TableSectionViewModel.swift in Sources */,
 				A951117025B7131500B33DD7 /* LatestNewsViewModel.swift in Sources */,
 				A93D78DC25BAB52800C94854 /* UIImageUtils.swift in Sources */,
@@ -881,6 +897,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A92AC9C625BC754D00148C71 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.1;
+			};
+		};
 		A93D545F25B81E8D004FC554 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -892,6 +916,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A92AC9C725BC754D00148C71 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A92AC9C625BC754D00148C71 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
 		A93D546025B81E8D004FC554 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A93D545F25B81E8D004FC554 /* XCRemoteSwiftPackageReference "Alamofire" */;

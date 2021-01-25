@@ -6,10 +6,12 @@
 //
 
 class TopStoriesViewModel: TableSectionViewModel {
-    private var networkDataRetriever: NetworkDataRetriever
+    internal var networkDataRetriever: NetworkDataRetriever
+    internal var databaseInteractor: DatabaseInteractor
     
-    init(networkDataRetriever: NetworkDataRetriever) {
+    init(networkDataRetriever: NetworkDataRetriever, databaseInteractor: DatabaseInteractor) {
         self.networkDataRetriever = networkDataRetriever
+        self.databaseInteractor = databaseInteractor
     }
     
     var sectionIdentifier: Int {
@@ -44,5 +46,9 @@ class TopStoriesViewModel: TableSectionViewModel {
             self?.dataSet = articles
             onComplete()
         }
+    }
+    
+    func createViewModelForTopStoryCell() -> NewsTableViewCellViewModel? {
+        return createViewModelForCell(indexOfArticle: 0)
     }
 }

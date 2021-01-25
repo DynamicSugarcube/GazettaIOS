@@ -28,7 +28,10 @@ class NetworkDataRetrieverImpl: NetworkDataRetriever {
                 return
             }
             do {
-                let response = try JSONDecoder().decode(NewsApiResponse.self, from: data)
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                
+                let response = try decoder.decode(NewsApiResponse.self, from: data)
                 onComplete(response)
             } catch let error {
                 print("Error occurred while retrieving data over network. Error message: \(error)")

@@ -88,14 +88,13 @@ extension DailyNewsViewController: UITableViewDataSource {
         switch indexPath.section {
         case topStoriesViewModel.sectionIdentifier:
             let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
-            if let news = topStoriesViewModel.currentTopStory {
-                cell.update(with: news)
-            }
+            let viewModel = topStoriesViewModel.createViewModelForTopStoryCell()
+            cell.viewModel = viewModel
             return cell
         case latestNewsViewModel.sectionIdentifier:
             let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
-            let news = latestNewsViewModel.dataSet[indexPath.row]
-            cell.update(with: news)
+            let viewModel = latestNewsViewModel.createViewModelForCell(indexOfArticle: indexPath.row)
+            cell.viewModel = viewModel
             return cell
         default:
             return UITableViewCell()

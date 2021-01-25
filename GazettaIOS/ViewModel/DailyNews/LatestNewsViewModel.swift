@@ -6,10 +6,12 @@
 //
 
 class LatestNewsViewModel: TableSectionViewModel {
-    private var networkDataRetriever: NetworkDataRetriever
+    internal var networkDataRetriever: NetworkDataRetriever
+    internal var databaseInteractor: DatabaseInteractor
     
-    init(networkDataRetriever: NetworkDataRetriever) {
+    init(networkDataRetriever: NetworkDataRetriever, databaseInteractor: DatabaseInteractor) {
         self.networkDataRetriever = networkDataRetriever
+        self.databaseInteractor = databaseInteractor
     }
     
     var sectionIdentifier: Int {

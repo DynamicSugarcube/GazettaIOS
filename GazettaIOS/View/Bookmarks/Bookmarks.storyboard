@@ -29,7 +29,7 @@
         <!--Bookmarks-->
         <scene sceneID="e4G-Bm-D6F">
             <objects>
-                <viewController id="QSn-Vz-AyE" sceneMemberID="viewController">
+                <viewController id="QSn-Vz-AyE" customClass="BookmarksViewController" customModule="GazettaIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hZE-O3-cqx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LatestNewsTableViewCell: UITableViewCell, NewsTableViewCell {
+class LatestNewsTableViewCell: UITableViewCell, NewsCell {
     // MARK: TODO Inject it?
     var viewModel: NewsTableViewCellViewModel? = nil {
         didSet {
@@ -24,7 +24,7 @@ class LatestNewsTableViewCell: UITableViewCell, NewsTableViewCell {
     @IBOutlet weak var bookmarkButton: UIButton!
 }
 
-extension LatestNewsTableViewCell: TableCellProtocol {
+extension LatestNewsTableViewCell: ViewCellIdentifiable {
     static var identifier: String {
         return "latestNewsCell"
     }

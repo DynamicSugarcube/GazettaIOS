@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TableCellProtocol {
+protocol ViewCellIdentifiable {
     static var identifier: String { get }
     static var nib: UINib { get }
 }

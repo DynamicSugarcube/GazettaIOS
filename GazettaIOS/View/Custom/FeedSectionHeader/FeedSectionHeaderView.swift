@@ -12,7 +12,7 @@ class FeedSectionHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var sectionButton: UIButton!
 }
 
-extension FeedSectionHeaderView: TableCellProtocol {
+extension FeedSectionHeaderView: ViewCellIdentifiable {
     static var identifier: String {
         return "feedSectionHeader"
     }

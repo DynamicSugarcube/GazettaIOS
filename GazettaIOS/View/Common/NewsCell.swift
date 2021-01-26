@@ -13,7 +13,7 @@ fileprivate let dateFormatter: DateFormatter = {
     return formatter
 }()
 
-protocol NewsTableViewCell {
+protocol NewsCell {
     var viewModel: NewsTableViewCellViewModel? { get set }
     
     var newsLabel: UILabel! { get set }
@@ -23,7 +23,7 @@ protocol NewsTableViewCell {
     var bookmarkButton: UIButton! { get set }
 }
 
-extension NewsTableViewCell {
+extension NewsCell {
     func update(with news: NewsArticle) {
         if let title = news.title {
             newsLabel.text = title

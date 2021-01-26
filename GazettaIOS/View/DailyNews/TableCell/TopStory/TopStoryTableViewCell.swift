@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TopStoryTableViewCell: UITableViewCell, NewsTableViewCell {    
+class TopStoryTableViewCell: UITableViewCell, NewsCell {    
     // MARK: TODO Inject it?
     var viewModel: NewsTableViewCellViewModel? = nil {
         didSet {
@@ -39,7 +39,7 @@ class TopStoryTableViewCell: UITableViewCell, NewsTableViewCell {
     }
 }
 
-extension TopStoryTableViewCell: TableCellProtocol {
+extension TopStoryTableViewCell: ViewCellIdentifiable {
     static var identifier: String {
         return "topStoryCell"
     }

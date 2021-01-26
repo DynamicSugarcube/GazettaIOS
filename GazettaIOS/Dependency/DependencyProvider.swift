@@ -13,11 +13,8 @@ class DependencyProvider {
     private static var sharedContainer: Container = {
         let container = Container()
         
-        container.register(TopStoriesViewModel.self) { _ in
-            TopStoriesViewModel(networkDataRetriever: networkDataRetriever, databaseInteractor: databaseInteractor)
-        }.inObjectScope(.container)
-        container.register(LatestNewsViewModel.self) { _ in
-            LatestNewsViewModel(networkDataRetriever: networkDataRetriever, databaseInteractor: databaseInteractor)
+        container.register(DailyNewsViewModel.self) { _ in
+            DailyNewsViewModel(networkDataRetriever: networkDataRetriever, databaseInteractor: databaseInteractor)
         }.inObjectScope(.container)
         container.register(BookmarksViewModel.self) { _ in
             BookmarksViewModel(databaseInteractor: databaseInteractor)
@@ -26,12 +23,8 @@ class DependencyProvider {
         return container
     }()
     
-    static func getTopStoriesViewModel() -> TopStoriesViewModel! {
-        return sharedContainer.resolve(TopStoriesViewModel.self)
-    }
-    
-    static func getLatestNewsViewModel() -> LatestNewsViewModel! {
-        return sharedContainer.resolve(LatestNewsViewModel.self)
+    static func getDailyNewsViewModel() -> DailyNewsViewModel! {
+        return sharedContainer.resolve(DailyNewsViewModel.self)
     }
     
     static func getBookmarksViewModel() -> BookmarksViewModel! {

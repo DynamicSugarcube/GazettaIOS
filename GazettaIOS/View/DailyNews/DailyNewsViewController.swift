@@ -11,14 +11,12 @@ class DailyNewsViewController: UIViewController {
     
     @IBOutlet private weak var dailyNewsTableView: UITableView!
         
-    private var topStoriesViewModel: TopStoriesViewModel!
-    private var latestNewsViewModel: LatestNewsViewModel!
+    private var dailyNewsViewModel: DailyNewsViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topStoriesViewModel = DependencyProvider.getTopStoriesViewModel()
-        latestNewsViewModel = DependencyProvider.getLatestNewsViewModel()
+        dailyNewsViewModel = DependencyProvider.getDailyNewsViewModel()
         
         dailyNewsTableView.register(FeedSectionHeaderView.nib, forHeaderFooterViewReuseIdentifier: FeedSectionHeaderView.identifier)
         
@@ -28,13 +26,19 @@ class DailyNewsViewController: UIViewController {
         
         dailyNewsTableView.delegate = self
         dailyNewsTableView.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        topStoriesViewModel.getData() { [unowned self] in
-            self.dailyNewsTableView.reloadSections(IndexSet(arrayLiteral: self.topStoriesViewModel.sectionIdentifier), with: .automatic)
+        dailyNewsViewModel.getTopStoriesOverNetwork { [unowned self] in
+            let sections = IndexSet(arrayLiteral: 0)
+            self.dailyNewsTableView.reloadSections(sections, with: .automatic)
         }
         
-        latestNewsViewModel.getData() { [unowned self] in
-            self.dailyNewsTableView.reloadSections(IndexSet(arrayLiteral: self.latestNewsViewModel.sectionIdentifier), with: .automatic)
+        dailyNewsViewModel.getLatestNewsOverNetwork { [unowned self] in
+            let sections = IndexSet(arrayLiteral: 1)
+            self.dailyNewsTableView.reloadSections(sections, with: .automatic)
         }
     }
 }
@@ -49,33 +53,19 @@ extension DailyNewsViewController: UITableViewDelegate {
 extension DailyNewsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return TableSectionIdentifier.total.rawValue
+        return dailyNewsViewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case topStoriesViewModel.sectionIdentifier:
-            return topStoriesViewModel.rowCount
-        case latestNewsViewModel.sectionIdentifier:
-            return latestNewsViewModel.rowCount
-        default:
-            return 0
-        }
+        return dailyNewsViewModel.sections[section].numberOfRows
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = dailyNewsTableView.dequeueReusableHeaderFooterView(withIdentifier: FeedSectionHeaderView.identifier) as! FeedSectionHeaderView
         
-        switch section {
-        case topStoriesViewModel.sectionIdentifier:
-            header.sectionLabel.text = topStoriesViewModel.sectionName
-            header.sectionButton.setTitle(topStoriesViewModel.sectionButtonName, for: .normal)
-        case latestNewsViewModel.sectionIdentifier:
-            header.sectionLabel.text = latestNewsViewModel.sectionName
-            header.sectionButton.setTitle(latestNewsViewModel.sectionButtonName, for: .normal)
-        default:
-            return nil
-        }
+        let dailyNewsSection = dailyNewsViewModel.sections[section]
+        header.sectionLabel.text = dailyNewsSection.name
+        header.sectionButton.setTitle(dailyNewsSection.buttonLabel, for: .normal)
         
         return header
     }
@@ -86,14 +76,14 @@ extension DailyNewsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
-        case topStoriesViewModel.sectionIdentifier:
+        case 0:
             let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
-            let viewModel = topStoriesViewModel.createViewModelForTopStoryCell()
+            let viewModel = dailyNewsViewModel.createViewModelForTopStoryCell()
             cell.viewModel = viewModel
             return cell
-        case latestNewsViewModel.sectionIdentifier:
+        case 1:
             let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
-            let viewModel = latestNewsViewModel.createViewModelForCell(indexOfArticle: indexPath.row)
+            let viewModel = dailyNewsViewModel.createViewModelForLatestNewsCell(indexOfArticle: indexPath.row)
             cell.viewModel = viewModel
             return cell
         default:

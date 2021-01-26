@@ -34,13 +34,11 @@ class BookmarksCollectionViewCell: UICollectionViewCell {
         guard let viewModel = self.viewModel else { return }
         if viewModel.isArticleBookmarked {
             if viewModel.removeFromBookmarks() {
-                let newImage = UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysOriginal)
-                bookmarkButton.setImage(newImage, for: .normal)
+                bookmarkButton.setImage(ViewCellResources.bookmarkImage, for: .normal)
             }
         } else {
             if viewModel.saveToBookmarks() {
-                let newImage = UIImage(systemName: "bookmark.fill")?.withRenderingMode(.alwaysOriginal)
-                bookmarkButton.setImage(newImage, for: .normal)
+                bookmarkButton.setImage(ViewCellResources.bookmarkFillImage, for: .normal)
             }
         }
     }
@@ -63,11 +61,9 @@ class BookmarksCollectionViewCell: UICollectionViewCell {
         
         if let isBookmark = viewModel?.isArticleBookmarked {
             if isBookmark {
-                let image = UIImage(systemName: "bookmark.fill")?.withRenderingMode(.alwaysOriginal)
-                bookmarkButton.setImage(image, for: .normal)
+                bookmarkButton.setImage(ViewCellResources.bookmarkFillImage, for: .normal)
             } else {
-                let image = UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysOriginal)
-                bookmarkButton.setImage(image, for: .normal)
+                bookmarkButton.setImage(ViewCellResources.bookmarkImage, for: .normal)
             }
         }
     }

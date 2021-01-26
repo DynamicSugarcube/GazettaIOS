@@ -40,11 +40,9 @@ extension NewsCell {
         
         if let isBookmark = viewModel?.isArticleBookmarked {
             if isBookmark {
-                let image = UIImage(systemName: "bookmark.fill")?.withRenderingMode(.alwaysOriginal)
-                bookmarkButton.setImage(image, for: .normal)
+                bookmarkButton.setImage(ViewCellResources.bookmarkFillImage, for: .normal)
             } else {
-                let image = UIImage(systemName: "bookmark")?.withRenderingMode(.alwaysOriginal)
-                bookmarkButton.setImage(image, for: .normal)
+                bookmarkButton.setImage(ViewCellResources.bookmarkImage, for: .normal)
             }
         }
     }

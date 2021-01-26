@@ -29,7 +29,6 @@
                             <constraint firstAttribute="width" constant="80" id="eMr-Ya-jB3"/>
                             <constraint firstAttribute="height" constant="80" id="jsm-ci-fnw"/>
                         </constraints>
-                        <imageReference key="image" image="newspaper" catalog="system" renderingMode="original"/>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="139" translatesAutoresizingMaskIntoConstraints="NO" id="ydz-1p-tgk">
                         <rect key="frame" x="16" y="96" width="288" height="28"/>
@@ -61,6 +60,9 @@
                                         <state key="normal">
                                             <imageReference key="image" image="bookmark" catalog="system" renderingMode="original"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onBookmarksPressed" destination="KGk-i7-Jjw" eventType="touchDown" id="33i-P6-rAa"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jv2-Bk-Mbx" userLabel="Send Button">
                                         <rect key="frame" x="32" y="0.0" width="28" height="28"/>
@@ -100,7 +102,6 @@
     </objects>
     <resources>
         <image name="bookmark" catalog="system" width="112" height="128"/>
-        <image name="newspaper" catalog="system" width="128" height="108"/>
         <image name="paperplane" catalog="system" width="128" height="118"/>
         <systemColor name="systemGray2Color">
             <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

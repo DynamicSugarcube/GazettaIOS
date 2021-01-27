@@ -56,16 +56,8 @@ class DailyNewsViewController: UIViewController {
 extension DailyNewsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var cell: NewsCell? = nil
-        switch indexPath.section {
-        case 0:
-            cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
-        default:
-            cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
-        }
-        if cell != nil {
-            performSegue(withIdentifier: "showNewsDetails", sender: cell)
-        }
+        let cell = dailyNewsTableView.cellForRow(at: indexPath)
+        performSegue(withIdentifier: "showNewsDetails", sender: cell)
     }
 }
 

@@ -45,6 +45,18 @@ class BookmarksViewController: UIViewController {
             self?.bookmarksCollectionView.reloadData()
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showNewsDetails" {
+            guard let cell = sender as? BookmarksCollectionViewCell else {
+                return
+            }
+            guard let controller = segue.destination as? NewsDetailsViewController else {
+                return
+            }
+            controller.data = cell.viewModel?.article
+        }
+    }
 }
 
 extension BookmarksViewController: UICollectionViewDelegateFlowLayout {
@@ -52,6 +64,11 @@ extension BookmarksViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth = BookmarksConstraints.calculateCellWidth(for: bookmarksCollectionView)
         let cellHeight = BookmarksConstraints.cellHeight
         return CGSize(width: cellWidth, height: cellHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = bookmarksCollectionView.cellForItem(at: indexPath)
+        performSegue(withIdentifier: "showNewsDetails", sender: cell)
     }
 }
 

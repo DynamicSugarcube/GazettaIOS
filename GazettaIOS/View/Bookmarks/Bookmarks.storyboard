@@ -64,11 +64,22 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="bookmarksCollectionView" destination="8g1-8R-ngs" id="0Ox-cO-edD"/>
+                        <segue destination="Ueq-IJ-3dc" kind="show" identifier="showNewsDetails" id="5kE-rr-pcE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wqC-tc-yrS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-336.23188405797106" y="-30.133928571428569"/>
+        </scene>
+        <!--NewsDetailsStoryboard-->
+        <scene sceneID="N4o-U7-bkG">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NewsDetails" referencedIdentifier="NewsDetailsStoryboard" id="Ueq-IJ-3dc" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="n6U-JP-qKC"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cse-cg-duP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="328" y="-30"/>
         </scene>
     </scenes>
     <resources>

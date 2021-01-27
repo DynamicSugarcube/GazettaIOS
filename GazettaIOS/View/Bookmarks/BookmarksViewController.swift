@@ -10,21 +10,24 @@ import UIKit
 class BookmarksViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         viewModel = DependencyProvider.getBookmarksViewModel()
-        
+
         collectionView.register(
             BookmarksCollectionViewCell.nib,
             forCellWithReuseIdentifier: BookmarksCollectionViewCell.identifier)
 
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        configureRefreshControl()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.getBookmarks { [weak self] in
-            self?.collectionView.reloadData()
+            guard let self = self else { return }
+            self.collectionView.reloadData()
         }
     }
 
@@ -38,6 +41,20 @@ class BookmarksViewController: UIViewController {
             return
         }
         controller.data = cell.viewModel?.article
+    }
+
+    private func configureRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+    }
+
+    @objc private func handleRefreshControl() {
+        viewModel.getBookmarks { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.reloadData()
+            self.collectionView.refreshControl?.endRefreshing()
+        }
     }
 
     @IBOutlet private weak var collectionView: UICollectionView!

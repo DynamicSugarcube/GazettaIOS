@@ -27,6 +27,8 @@ class DailyNewsViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
+
+        configureRefreshControl()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +40,7 @@ class DailyNewsViewController: UIViewController {
                 [self.viewModel.topStoriesSectionId],
                 with: .automatic)
         }
- 
+
         viewModel.getLatestNewsOverNetwork { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadSections(
@@ -57,6 +59,32 @@ class DailyNewsViewController: UIViewController {
             return
         }
         controller.data = cell.viewModel?.article
+    }
+
+    private func configureRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+    }
+
+    @objc private func handleRefreshControl() {
+        viewModel.getTopStoriesOverNetwork { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadSections(
+                [self.viewModel.topStoriesSectionId],
+                with: .automatic)
+            // TODO: endRefreshing() should be called once for 2 closures
+            self.tableView.refreshControl?.endRefreshing()
+        }
+
+        viewModel.getLatestNewsOverNetwork { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadSections(
+                [self.viewModel.latestNewsSectionId],
+                with: .automatic)
+            // TODO: endRefreshing() should be called once for 2 closures
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
 
     @IBOutlet private weak var tableView: UITableView!

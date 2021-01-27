@@ -7,34 +7,28 @@
 
 import Foundation
 
-protocol TableSectionProtocol {
-    var name: String { get set }
-    var buttonLabel: String { get set }
-    
-    var dataSet: [NewsArticle] { get set }
-    var numberOfRows: Int { get }
-}
+enum TableSection: Int {
+    case topStories = 0, latestNews, total
 
-extension TableSectionProtocol {
-    var numberOfRows: Int {
-        return dataSet.count
+    var sectionName: String {
+        switch self {
+        case .topStories:
+            return "Top Stories"
+        case .latestNews:
+            return "Latest News"
+        default:
+            return "Unknown Section"
+        }
     }
-}
 
-struct TopStoriesSection: TableSectionProtocol {
-    var name = "Top Stories"
-    var buttonLabel = "More"
-    
-    var dataSet: [NewsArticle] = []
-    
-    var numberOfRows: Int {
-        return 1
+    var sectionButtonLabel: String {
+        switch self {
+        case .topStories:
+            return "More"
+        case .latestNews:
+            return "See All"
+        default:
+            return "Unknown Button"
+        }
     }
-}
-
-struct LatestNewsSection: TableSectionProtocol {
-    var name = "Latest News"
-    var buttonLabel = "See All"
-    
-    var dataSet: [NewsArticle] = []
 }

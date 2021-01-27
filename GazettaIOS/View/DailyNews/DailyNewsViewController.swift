@@ -8,99 +8,127 @@
 import UIKit
 
 class DailyNewsViewController: UIViewController {
-    
-    @IBOutlet private weak var dailyNewsTableView: UITableView!
-        
-    private var dailyNewsViewModel: DailyNewsViewModel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        dailyNewsViewModel = DependencyProvider.getDailyNewsViewModel()
-        
-        dailyNewsTableView.register(FeedSectionHeaderView.nib, forHeaderFooterViewReuseIdentifier: FeedSectionHeaderView.identifier)
-        
-        dailyNewsTableView.register(TopStoryTableViewCell.nib, forCellReuseIdentifier: TopStoryTableViewCell.identifier)
-        
-        dailyNewsTableView.register(LatestNewsTableViewCell.nib, forCellReuseIdentifier: LatestNewsTableViewCell.identifier)
-        
-        dailyNewsTableView.delegate = self
-        dailyNewsTableView.dataSource = self
+
+        viewModel = DependencyProvider.getDailyNewsViewModel()
+
+        tableView.register(
+            FeedSectionHeaderView.nib,
+            forHeaderFooterViewReuseIdentifier: FeedSectionHeaderView.identifier)
+
+        tableView.register(
+            TopStoryTableViewCell.nib,
+            forCellReuseIdentifier: TopStoryTableViewCell.identifier)
+
+        tableView.register(
+            LatestNewsTableViewCell.nib,
+            forCellReuseIdentifier: LatestNewsTableViewCell.identifier)
+
+        tableView.delegate = self
+        tableView.dataSource = self
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        dailyNewsViewModel.getTopStoriesOverNetwork { [unowned self] in
-            let sections = IndexSet(arrayLiteral: 0)
-            self.dailyNewsTableView.reloadSections(sections, with: .automatic)
+
+        viewModel.getTopStoriesOverNetwork { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadSections(
+                [self.viewModel.topStoriesSectionId],
+                with: .automatic)
         }
-        
-        dailyNewsViewModel.getLatestNewsOverNetwork { [unowned self] in
-            let sections = IndexSet(arrayLiteral: 1)
-            self.dailyNewsTableView.reloadSections(sections, with: .automatic)
+ 
+        viewModel.getLatestNewsOverNetwork { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadSections(
+                [self.viewModel.latestNewsSectionId],
+                with: .automatic)
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showNewsDetails" {
-            guard let cell = sender as? NewsCell else { return }
-            guard let controller = segue.destination as? NewsDetailsViewController else {
-                return
-            }
-            controller.data = cell.viewModel?.article
+        guard
+            segue.identifier == viewModel.showNewsDetailsSegueId,
+            let cell = sender as? DailyNewsTableViewCell,
+            let controller = segue.destination as? NewsDetailsViewController
+        else {
+            print("Couldn't prepare for segue")
+            return
         }
+        controller.data = cell.viewModel?.article
     }
+
+    @IBOutlet private weak var tableView: UITableView!
+
+    private var viewModel: DailyNewsViewModel!
 }
 
+// MARK: - UITableViewDelegate
 extension DailyNewsViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = dailyNewsTableView.cellForRow(at: indexPath)
-        performSegue(withIdentifier: "showNewsDetails", sender: cell)
+        let cell = tableView.cellForRow(at: indexPath)
+        performSegue(withIdentifier: viewModel.showNewsDetailsSegueId, sender: cell)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
+// MARK: - UITableViewDataSource
 extension DailyNewsViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dailyNewsViewModel.sections.count
+        viewModel.numberOfSections
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dailyNewsViewModel.sections[section].numberOfRows
+        viewModel.calculateNumberOfRows(for: section)
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = dailyNewsTableView.dequeueReusableHeaderFooterView(withIdentifier: FeedSectionHeaderView.identifier) as! FeedSectionHeaderView
-        
-        let dailyNewsSection = dailyNewsViewModel.sections[section]
-        header.sectionLabel.text = dailyNewsSection.name
-        header.sectionButton.setTitle(dailyNewsSection.buttonLabel, for: .normal)
-        
+        guard
+            let header = tableView
+                .dequeueReusableHeaderFooterView(withIdentifier: FeedSectionHeaderView.identifier)
+                as? FeedSectionHeaderView,
+            let attributes = viewModel.getAttributes(for: section)
+        else {
+            return nil
+        }
+        header.sectionLabel.text = attributes.sectionLabel
+        header.sectionButton.setTitle(attributes.buttonLabel, for: .normal)
         return header
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return CGFloat(viewModel.headerSectionHeight)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var rawIdentifier: String?
+        var rawCellViewModel: NewsCellViewModel?
         switch indexPath.section {
-        case 0:
-            let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
-            let viewModel = dailyNewsViewModel.createViewModelForTopStoryCell()
-            cell.viewModel = viewModel
-            return cell
-        case 1:
-            let cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
-            let viewModel = dailyNewsViewModel.createViewModelForLatestNewsCell(indexOfArticle: indexPath.row)
-            cell.viewModel = viewModel
-            return cell
+        case viewModel.topStoriesSectionId:
+            rawIdentifier = TopStoryTableViewCell.identifier
+            rawCellViewModel = viewModel.createViewModelForTopStoryCell()
+        case viewModel.latestNewsSectionId:
+            rawIdentifier = LatestNewsTableViewCell.identifier
+            rawCellViewModel = viewModel.createViewModelForLatestNewsCell(
+                indexOfArticle: indexPath.row)
         default:
+            rawIdentifier = nil
+            rawCellViewModel = nil
+        }
+
+        guard
+            let identifier = rawIdentifier,
+            let cellViewModel = rawCellViewModel,
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier)
+        else {
+            print("Couldn't create table cell")
             return UITableViewCell()
         }
+
+        if let newsCell = cell as? DailyNewsTableViewCell {
+            newsCell.viewModel = cellViewModel
+        }
+        return cell
     }
 }
-
-

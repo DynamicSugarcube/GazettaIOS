@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct NewsApiResponse: Decodable {
+struct NetworkResponse: Decodable {
     let articles: [NewsArticle]?
 }

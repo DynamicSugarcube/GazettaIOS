@@ -13,7 +13,7 @@ enum NewsApiEndpoint: String {
 }
 
 enum NewsApiCountry: String {
-    case us = "us"
+    case usa = "us"
 }
 
 struct NewsApiConstants {

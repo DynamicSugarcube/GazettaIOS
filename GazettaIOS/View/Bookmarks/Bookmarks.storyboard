@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -32,12 +31,11 @@
             <objects>
                 <viewController id="QSn-Vz-AyE" customClass="BookmarksViewController" customModule="GazettaIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hZE-O3-cqx">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8g1-8R-ngs">
-                                <rect key="frame" x="0.0" y="140" width="414" height="673"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8g1-8R-ngs">
+                                <rect key="frame" x="0.0" y="44" width="600" height="507"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hh7-UM-zKy">
                                     <size key="itemSize" width="128" height="128"/>
@@ -59,11 +57,17 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pQf-za-BiB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="8g1-8R-ngs" firstAttribute="leading" secondItem="pQf-za-BiB" secondAttribute="leading" id="0Qc-YL-q2F"/>
+                            <constraint firstItem="8g1-8R-ngs" firstAttribute="bottom" secondItem="pQf-za-BiB" secondAttribute="bottom" id="DgA-dD-q7I"/>
+                            <constraint firstItem="8g1-8R-ngs" firstAttribute="top" secondItem="pQf-za-BiB" secondAttribute="top" id="Xzq-Ru-xIE"/>
+                            <constraint firstItem="8g1-8R-ngs" firstAttribute="trailing" secondItem="pQf-za-BiB" secondAttribute="trailing" id="jd7-Y1-AsM"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Bookmarks" id="gdV-dM-KuE"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="bookmarksCollectionView" destination="8g1-8R-ngs" id="0Ox-cO-edD"/>
+                        <outlet property="collectionView" destination="8g1-8R-ngs" id="0Ox-cO-edD"/>
                         <segue destination="Ueq-IJ-3dc" kind="show" identifier="showNewsDetails" id="5kE-rr-pcE"/>
                     </connections>
                 </viewController>

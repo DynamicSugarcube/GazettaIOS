@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TopStoriesRequest: NetworkRequestProtocol {
+struct TopStoriesRequest: NetworkRequest {
     var country: NewsApiCountry
     
     var endpoint: NewsApiEndpoint {

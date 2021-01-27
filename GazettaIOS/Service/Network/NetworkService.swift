@@ -5,7 +5,8 @@
 //  Created by Vsevolod Sharov on 20.01.2021.
 //
 
-import Alamofire
 import Foundation
 
-protocol NetworkDataRetriever : DataRetriever {}
+protocol NetworkService {
+    func getNewsArticles(on request: NetworkRequest, onComplete: @escaping ([NewsArticle]) -> Void)
+}

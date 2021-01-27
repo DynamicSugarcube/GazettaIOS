@@ -7,6 +7,8 @@
 
 import Foundation
 
-protocol NetworkRequestProtocol: DataRequestProtocol {
+protocol NetworkRequest {
     var endpoint: NewsApiEndpoint { get }
+
+    func build() -> String
 }

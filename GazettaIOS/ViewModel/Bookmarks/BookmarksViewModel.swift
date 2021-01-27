@@ -7,40 +7,46 @@
 
 import Foundation
 
-class BookmarksViewModel: BookmarksDelegate {
-    private var databaseInteractor: DatabaseInteractor
+class BookmarksViewModel {
+    let showNewsDetailsSegueId = "showNewsDetails"
     
-    var dataSet: [NewsArticle] = []
-    
-    init(databaseInteractor: DatabaseInteractor) {
-        self.databaseInteractor = databaseInteractor
+    init(databaseService: DatabaseService) {
+        self.databaseService = databaseService
     }
     
     func getBookmarks(onComplete: @escaping () -> Void) {
-        databaseInteractor.getFromDatabase() { [weak self] articles in
-            self?.dataSet = articles
+        databaseService.getFromDatabase { [weak self] articles in
+            guard let self = self else { return }
+            self.bookmarks = articles
             onComplete()
         }
     }
-    
-    func isBookmark(_ article: NewsArticle) -> Bool {
-        return databaseInteractor.isInDatabase(article)
-    }
-    
-    func saveToBookmarks(_ article: NewsArticle) -> Bool {
-        return databaseInteractor.saveToDatabase(article)
-    }
-    
-    func removeFromBookmarks(_ article: NewsArticle) -> Bool {
-        return databaseInteractor.removeFromDatabase(article)
-    }
-    
-    func createViewModelForCell(indexOfArticle index: Int) -> NewsTableViewCellViewModel? {
-        if index >= dataSet.count || index < 0 {
+
+    func createViewModelForCell(indexOfArticle index: Int) -> NewsCellViewModel? {
+        if !bookmarks.indices.contains(index) {
             print("Couldn't create a view model for index: \(index)")
             return nil
         }
-        let article = dataSet[index]
-        return NewsTableViewCellViewModel(article: article, delegate: self)
+        let article = bookmarks[index]
+        return NewsCellViewModel(article: article, delegate: self)
+    }
+
+    private var databaseService: DatabaseService
+
+    private(set) var bookmarks: [NewsArticle] = []
+}
+
+// MARK: - BookmarksDelegate
+extension BookmarksViewModel: BookmarksDelegate {
+    func isBookmark(_ article: NewsArticle) -> Bool {
+        return databaseService.isInDatabase(article)
+    }
+
+    func saveToBookmarks(_ article: NewsArticle) -> Bool {
+        return databaseService.saveToDatabase(article)
+    }
+
+    func removeFromBookmarks(_ article: NewsArticle) -> Bool {
+        return databaseService.removeFromDatabase(article)
     }
 }

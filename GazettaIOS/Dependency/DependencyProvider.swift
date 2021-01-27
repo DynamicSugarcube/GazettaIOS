@@ -12,29 +12,28 @@ import UIKit
 class DependencyProvider {
     private static var sharedContainer: Container = {
         let container = Container()
-        
+
         container.register(DailyNewsViewModel.self) { _ in
-            DailyNewsViewModel(networkDataRetriever: networkDataRetriever, databaseInteractor: databaseInteractor)
+            DailyNewsViewModel(networkService: networkService, databaseService: databaseService)
         }.inObjectScope(.container)
         container.register(BookmarksViewModel.self) { _ in
-            BookmarksViewModel(databaseInteractor: databaseInteractor)
+            BookmarksViewModel(databaseService: databaseService)
         }.inObjectScope(.container)
-        
+
         return container
     }()
-    
+
     static func getDailyNewsViewModel() -> DailyNewsViewModel! {
         return sharedContainer.resolve(DailyNewsViewModel.self)
     }
-    
+
     static func getBookmarksViewModel() -> BookmarksViewModel! {
         return sharedContainer.resolve(BookmarksViewModel.self)
     }
-    
-    private static var networkDataRetriever = NetworkDataRetrieverImpl()
-    private static var databaseInteractor = DatabaseInteractorImpl(context: managedContext)
-    
-    private static let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    private static let managedContext: NSManagedObjectContext = appDelegate.persistentContainer.viewContext
-    private static let storeCoordinator: NSPersistentStoreCoordinator = appDelegate.persistentContainer.persistentStoreCoordinator
+
+    private static var networkService = NetworkServiceImpl()
+    private static var databaseService = DatabaseServiceImpl(context: managedContext)
+
+    private static let managedContext = DatabaseStack.persistentContainer.viewContext
+    private static let storeCoordinator = DatabaseStack.persistentContainer.persistentStoreCoordinator
 }

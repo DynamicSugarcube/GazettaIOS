@@ -9,20 +9,27 @@ import UIKit
 import WebKit
 
 class NewsDetailsViewController: UIViewController, WKUIDelegate {
-    @IBOutlet private weak var webView: WKWebView!
-    
-    var data: NewsArticle? = nil
-    
+    var data: NewsArticle?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         webView.uiDelegate = self
         
-        if let urlString = data?.newsUrl {
-            if let url = URL(string: urlString) {
-                let request = URLRequest(url: url)
-                webView.load(request)
-            }
-        }
+        loadWebView()
     }
+
+    private func loadWebView() {
+        guard
+            let urlString = data?.newsUrl,
+            let url = URL(string: urlString)
+        else {
+            print("Couldn't load web view. Wrong URL")
+            return
+        }
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+
+    @IBOutlet private weak var webView: WKWebView!
 }

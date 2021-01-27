@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LatestNewsRequest: NetworkRequestProtocol {
+struct LatestNewsRequest: NetworkRequest {
     var endpoint: NewsApiEndpoint {
         return .latestNews
     }

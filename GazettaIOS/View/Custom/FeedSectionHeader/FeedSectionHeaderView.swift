@@ -8,17 +8,17 @@
 import UIKit
 
 class FeedSectionHeaderView: UITableViewHeaderFooterView {
-    @IBOutlet weak var sectionLabel: UILabel!
-    @IBOutlet weak var sectionButton: UIButton!
+    @IBOutlet private(set) weak var sectionLabel: UILabel!
+    @IBOutlet private(set) weak var sectionButton: UIButton!
 }
 
+// MARK: - ViewCellIdentifiable
 extension FeedSectionHeaderView: ViewCellIdentifiable {
     static var identifier: String {
         return "feedSectionHeader"
     }
-    
+
     static var nib: UINib {
         return UINib(nibName: "FeedSectionHeaderView", bundle: nil)
     }
-    
 }

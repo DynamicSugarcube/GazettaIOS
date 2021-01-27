@@ -41,12 +41,31 @@ class DailyNewsViewController: UIViewController {
             self.dailyNewsTableView.reloadSections(sections, with: .automatic)
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showNewsDetails" {
+            guard let cell = sender as? NewsCell else { return }
+            guard let controller = segue.destination as? NewsDetailsViewController else {
+                return
+            }
+            controller.data = cell.viewModel?.article
+        }
+    }
 }
 
 extension DailyNewsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Do nothing
+        var cell: NewsCell? = nil
+        switch indexPath.section {
+        case 0:
+            cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: TopStoryTableViewCell.identifier, for: indexPath) as! TopStoryTableViewCell
+        default:
+            cell = dailyNewsTableView.dequeueReusableCell(withIdentifier: LatestNewsTableViewCell.identifier, for: indexPath) as! LatestNewsTableViewCell
+        }
+        if cell != nil {
+            performSegue(withIdentifier: "showNewsDetails", sender: cell)
+        }
     }
 }
 

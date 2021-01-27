@@ -28,6 +28,8 @@
 		A94072C625C0412C0051DF71 /* CollectionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94072C525C0412C0051DF71 /* CollectionUtils.swift */; };
 		A94072CF25C045750051DF71 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94072CE25C045750051DF71 /* TableSection.swift */; };
 		A94072D425C046EB0051DF71 /* ViewCellResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94072D325C046EB0051DF71 /* ViewCellResources.swift */; };
+		A94072DA25C04A980051DF71 /* NewsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94072D925C04A980051DF71 /* NewsDetailsViewController.swift */; };
+		A94072DF25C04AC50051DF71 /* NewsDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94072DE25C04AC50051DF71 /* NewsDetails.storyboard */; };
 		A94C1A7325B4679200B5F946 /* Bookmarks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94C1A7225B4679200B5F946 /* Bookmarks.storyboard */; };
 		A94C1A7B25B4684800B5F946 /* DailyNews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94C1A7A25B4684800B5F946 /* DailyNews.storyboard */; };
 		A94C1A8925B46BD500B5F946 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94C1A8825B46BD500B5F946 /* Settings.storyboard */; };
@@ -94,6 +96,8 @@
 		A94072C525C0412C0051DF71 /* CollectionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUtils.swift; sourceTree = "<group>"; };
 		A94072CE25C045750051DF71 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
 		A94072D325C046EB0051DF71 /* ViewCellResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCellResources.swift; sourceTree = "<group>"; };
+		A94072D925C04A980051DF71 /* NewsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailsViewController.swift; sourceTree = "<group>"; };
+		A94072DE25C04AC50051DF71 /* NewsDetails.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NewsDetails.storyboard; sourceTree = "<group>"; };
 		A94C1A7225B4679200B5F946 /* Bookmarks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Bookmarks.storyboard; sourceTree = "<group>"; };
 		A94C1A7A25B4684800B5F946 /* DailyNews.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DailyNews.storyboard; sourceTree = "<group>"; };
 		A94C1A8825B46BD500B5F946 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -237,11 +241,21 @@
 			path = Table;
 			sourceTree = "<group>";
 		};
+		A94072D825C04A380051DF71 /* NewsDetails */ = {
+			isa = PBXGroup;
+			children = (
+				A94072D925C04A980051DF71 /* NewsDetailsViewController.swift */,
+				A94072DE25C04AC50051DF71 /* NewsDetails.storyboard */,
+			);
+			path = NewsDetails;
+			sourceTree = "<group>";
+		};
 		A94C1A7125B4676F00B5F946 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				A951116125B70CBC00B33DD7 /* Common */,
 				A951111825B6B41400B33DD7 /* Custom */,
+				A94072D825C04A380051DF71 /* NewsDetails */,
 				A94C1A8E25B46EF800B5F946 /* Main */,
 				A94C1A8025B468B800B5F946 /* DailyNews */,
 				A94C1A7F25B468AC00B5F946 /* Bookmarks */,
@@ -588,6 +602,7 @@
 				A951112425B6BA8900B33DD7 /* TopStoryTableViewCell.xib in Resources */,
 				A94C1A8925B46BD500B5F946 /* Settings.storyboard in Resources */,
 				A9CADE1C25B03CB60045EDBB /* Assets.xcassets in Resources */,
+				A94072DF25C04AC50051DF71 /* NewsDetails.storyboard in Resources */,
 				A9CADE1A25B03CB50045EDBB /* Main.storyboard in Resources */,
 				A94072AA25BFEFF30051DF71 /* BookmarksCollectionViewCell.xib in Resources */,
 				A951111A25B6B43900B33DD7 /* FeedSectionHeaderView.xib in Resources */,
@@ -630,6 +645,7 @@
 				A951115A25B70B3100B33DD7 /* ViewCellIdentifiable.swift in Sources */,
 				A951114025B6DEB600B33DD7 /* FeedSectionHeaderView.swift in Sources */,
 				A9CADE1325B03CB50045EDBB /* AppDelegate.swift in Sources */,
+				A94072DA25C04A980051DF71 /* NewsDetailsViewController.swift in Sources */,
 				A9CADE1525B03CB50045EDBB /* SceneDelegate.swift in Sources */,
 				A94072A925BFEFF30051DF71 /* BookmarksCollectionViewCell.swift in Sources */,
 				A960C92125BD6186002C9C31 /* DependencyProvider.swift in Sources */,

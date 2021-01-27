@@ -34,11 +34,22 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="dailyNewsTableView" destination="GxE-W7-tbp" id="dQT-Zm-JEB"/>
+                        <segue destination="R7m-Lv-Gki" kind="show" identifier="showNewsDetails" id="Siq-pS-hSC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eat-Aq-hai" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-494" y="66"/>
+        </scene>
+        <!--NewsDetailsStoryboard-->
+        <scene sceneID="xg0-47-QsV">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NewsDetails" referencedIdentifier="NewsDetailsStoryboard" id="R7m-Lv-Gki" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="jdq-HK-Jdq"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1QV-p3-ebG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="185" y="66"/>
         </scene>
         <!--DailyNews-->
         <scene sceneID="2Dt-Wv-YbL">

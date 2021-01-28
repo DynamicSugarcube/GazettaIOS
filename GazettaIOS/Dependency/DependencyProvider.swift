@@ -19,6 +19,9 @@ class DependencyProvider {
         container.register(BookmarksViewModel.self) { _ in
             BookmarksViewModel(databaseService: databaseService)
         }.inObjectScope(.container)
+        container.register(SearchViewModel.self) { _ in
+            SearchViewModel(networkService: networkService)
+        }.inObjectScope(.container)
 
         return container
     }()
@@ -29,6 +32,10 @@ class DependencyProvider {
 
     static func getBookmarksViewModel() -> BookmarksViewModel! {
         return sharedContainer.resolve(BookmarksViewModel.self)
+    }
+
+    static func getSearchViewModel() -> SearchViewModel! {
+        return sharedContainer.resolve(SearchViewModel.self)
     }
 
     private static var networkService = NetworkServiceImpl()

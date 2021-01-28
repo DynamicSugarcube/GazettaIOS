@@ -16,6 +16,7 @@ class DailyNewsViewModel {
     }
 
     let showNewsDetailsSegueId = "showNewsDetails"
+    let showSearchSegueId = "showSearch"
 
     let headerSectionHeight = 50
 

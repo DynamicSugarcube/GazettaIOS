@@ -50,15 +50,24 @@ class DailyNewsViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard
-            segue.identifier == viewModel.showNewsDetailsSegueId,
-            let cell = sender as? DailyNewsTableViewCell,
-            let controller = segue.destination as? NewsDetailsViewController
-        else {
-            print("Couldn't prepare for segue")
-            return
+        switch segue.identifier {
+        case viewModel.showNewsDetailsSegueId:
+            guard
+                let cell = sender as? DailyNewsTableViewCell,
+                let controller = segue.destination as? NewsDetailsViewController
+            else {
+                print("Couldn't prepare for segue \(viewModel.showNewsDetailsSegueId)")
+                return
+            }
+            controller.data = cell.viewModel?.article
+        case viewModel.showSearchSegueId: break
+        default:
+            print("Wrong segue ID provided")
         }
-        controller.data = cell.viewModel?.article
+    }
+
+    @IBAction private func showSearch() {
+        performSegue(withIdentifier: viewModel.showSearchSegueId, sender: self)
     }
 
     private func configureRefreshControl() {

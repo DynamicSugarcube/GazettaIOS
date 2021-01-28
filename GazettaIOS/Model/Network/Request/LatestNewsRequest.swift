@@ -12,8 +12,27 @@ struct LatestNewsRequest: NetworkRequest {
         return .latestNews
     }
 
-    // MARK: TODO Not implemented
+    var keyword: String?
+
     func build() -> String {
-        return ""
+        var request = NewsApiConstants.baseUrl
+        request += endpoint.rawValue
+
+        request += "?"
+
+        if let keyword = keyword {
+            request += "qInTitle=\(keyword)&"
+        }
+
+        let language = "en"
+        request += "language=\(language)&"
+
+        let currentDate = dateFormatter.string(from: Date())
+        request += "to=\(currentDate)&"
+
+        request += "apiKey=\(NewsApiConstants.apiKey)"
+        return request
     }
+
+    private let dateFormatter = ISO8601DateFormatter()
 }

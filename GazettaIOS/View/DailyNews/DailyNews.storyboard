@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,11 +13,11 @@
             <objects>
                 <viewController id="VPN-ho-kvI" customClass="DailyNewsViewController" customModule="GazettaIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cHe-lD-f3j">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="GxE-W7-tbp">
-                                <rect key="frame" x="0.0" y="96" width="600" height="455"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="673"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
@@ -29,11 +30,19 @@
                             <constraint firstItem="BWd-5t-dI2" firstAttribute="trailing" secondItem="GxE-W7-tbp" secondAttribute="trailing" id="j6f-ck-tU5"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Daily News" id="3qv-kq-32U"/>
+                    <navigationItem key="navigationItem" title="Daily News" id="3qv-kq-32U">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="search" id="r9G-BA-frn">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="showSearch" destination="VPN-ho-kvI" id="1mR-Fu-zWA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="GxE-W7-tbp" id="dQT-Zm-JEB"/>
                         <segue destination="R7m-Lv-Gki" kind="show" identifier="showNewsDetails" id="Siq-pS-hSC"/>
+                        <segue destination="xDm-PX-YkB" kind="show" identifier="showSearch" id="tmx-zE-sJg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eat-Aq-hai" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -49,6 +58,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1QV-p3-ebG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="185" y="66"/>
+        </scene>
+        <!--SearchStoryboard-->
+        <scene sceneID="Ckw-ol-FUf">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Search" referencedIdentifier="SearchStoryboard" id="xDm-PX-YkB" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="p57-ZD-WYk"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gog-dg-p71" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="111" y="127"/>
         </scene>
         <!--DailyNews-->
         <scene sceneID="2Dt-Wv-YbL">
@@ -71,6 +90,9 @@
     </scenes>
     <resources>
         <image name="network" catalog="system" width="128" height="121"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

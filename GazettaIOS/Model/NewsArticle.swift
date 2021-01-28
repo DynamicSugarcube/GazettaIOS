@@ -13,7 +13,7 @@ struct NewsArticle: Decodable {
     let newsUrl: String?
     let imageUrl: String?
     let when: Date?
-    
+
     private enum CodingKeys: String, CodingKey {
         case publisher = "author"
         case title

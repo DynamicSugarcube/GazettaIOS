@@ -11,7 +11,7 @@ struct LatestNewsRequest: NetworkRequest {
     var endpoint: NewsApiEndpoint {
         return .latestNews
     }
-    
+
     // MARK: TODO Not implemented
     func build() -> String {
         return ""

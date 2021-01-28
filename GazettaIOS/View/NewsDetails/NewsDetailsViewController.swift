@@ -13,9 +13,9 @@ class NewsDetailsViewController: UIViewController, WKUIDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         webView.uiDelegate = self
-        
+
         loadWebView()
     }
 

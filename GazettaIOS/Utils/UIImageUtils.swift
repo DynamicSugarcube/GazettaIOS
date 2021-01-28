@@ -18,7 +18,7 @@ extension UIImage {
             }
         }
     }
-    
+
     private static func getImageData(_ url: String, onComplete: @escaping (Data) -> Void) {
         AF.request(url, method: .get).response { response in
             if let data = response.data {

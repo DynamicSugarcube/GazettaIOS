@@ -9,11 +9,11 @@ import Foundation
 
 struct TopStoriesRequest: NetworkRequest {
     var country: NewsApiCountry
-    
+
     var endpoint: NewsApiEndpoint {
         return .topStories
     }
-    
+
     func build() -> String {
         var request = NewsApiConstants.baseUrl
         request += endpoint.rawValue

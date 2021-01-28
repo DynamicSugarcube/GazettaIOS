@@ -25,7 +25,7 @@ class NetworkServiceImpl: NetworkService {
             }
             do {
                 let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601     
+                decoder.dateDecodingStrategy = .iso8601
                 let response = try decoder.decode(NetworkResponse.self, from: data)
                 onComplete(response)
             } catch let error {

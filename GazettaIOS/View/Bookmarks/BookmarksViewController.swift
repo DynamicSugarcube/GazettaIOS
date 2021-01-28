@@ -20,15 +20,26 @@ class BookmarksViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
 
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = viewModel.searchPlaceholder
+        searchController.definesPresentationContext = true
+        navigationItem.searchController = searchController
+
         configureRefreshControl()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewModel.getBookmarks { [weak self] in
             guard let self = self else { return }
             self.collectionView.reloadData()
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchController.isActive = false
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,11 +68,25 @@ class BookmarksViewController: UIViewController {
         }
     }
 
+    private func filterData(for searchText: String) {
+        viewModel.filterBookmarks(for: searchText)
+        collectionView.reloadData()
+    }
+
     @IBOutlet private weak var collectionView: UICollectionView!
 
     private var viewModel: BookmarksViewModel!
+
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var isSearchbarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    private var isFiltering: Bool {
+        return searchController.isActive && !isSearchbarEmpty
+    }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension BookmarksViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
@@ -69,9 +94,10 @@ extension BookmarksViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension BookmarksViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.bookmarks.count
+        isFiltering ? viewModel.filteredBookmarks.count : viewModel.bookmarks.count
     }
 
     func collectionView(
@@ -81,12 +107,24 @@ extension BookmarksViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: BookmarksCollectionViewCell.identifier,
                 for: indexPath) as? BookmarksCollectionViewCell,
-            let cellViewModel = viewModel.createViewModelForCell(indexOfArticle: indexPath.row)
+            let cellViewModel = viewModel.createViewModelForCell(
+                indexOfArticle: indexPath.row,
+                isFiltering: isFiltering)
         else {
             print("Couldn't create table cell")
             return UICollectionViewCell()
         }
         cell.viewModel = cellViewModel
         return cell
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension BookmarksViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        if let text = searchBar.text {
+            filterData(for: text)
+        }
     }
 }

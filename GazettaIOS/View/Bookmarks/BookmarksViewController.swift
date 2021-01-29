@@ -21,9 +21,12 @@ class BookmarksViewController: UIViewController {
         collectionView.dataSource = self
 
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = viewModel.searchPlaceholder
         searchController.definesPresentationContext = true
+        searchController.searchBar.isHidden = true
+
         navigationItem.searchController = searchController
 
         configureRefreshControl()
@@ -58,6 +61,12 @@ class BookmarksViewController: UIViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         collectionView.refreshControl = refreshControl
+    }
+
+    @IBAction private func onSearchButtonClicked() {
+        searchController.isActive = true
+        searchController.searchBar.isHidden = false
+        searchController.searchBar.becomeFirstResponder()
     }
 
     @objc private func handleRefreshControl() {
@@ -126,5 +135,12 @@ extension BookmarksViewController: UISearchResultsUpdating {
         if let text = searchBar.text {
             filterData(for: text)
         }
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension BookmarksViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchController.searchBar.isHidden = true
     }
 }

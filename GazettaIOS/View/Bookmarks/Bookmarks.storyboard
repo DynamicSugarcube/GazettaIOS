@@ -36,7 +36,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8g1-8R-ngs">
-                                <rect key="frame" x="0.0" y="140" width="414" height="673"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hh7-UM-zKy">
                                     <size key="itemSize" width="128" height="128"/>
@@ -65,7 +65,14 @@
                             <constraint firstItem="8g1-8R-ngs" firstAttribute="trailing" secondItem="pQf-za-BiB" secondAttribute="trailing" id="jd7-Y1-AsM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Bookmarks" id="gdV-dM-KuE"/>
+                    <navigationItem key="navigationItem" title="Bookmarks" id="gdV-dM-KuE">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="search" id="WIw-yP-PU2">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="onSearchButtonClicked" destination="QSn-Vz-AyE" id="KYe-0X-5nP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="8g1-8R-ngs" id="0Ox-cO-edD"/>
@@ -89,6 +96,9 @@
     </scenes>
     <resources>
         <image name="bookmark.fill" catalog="system" width="112" height="128"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

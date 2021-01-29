@@ -25,8 +25,11 @@ class SearchViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = viewModel.searchPlaceholder
         searchController.definesPresentationContext = true
+        searchController.hidesNavigationBarDuringPresentation = false
 
-        navigationItem.searchController = searchController
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.hidesBackButton = true
+        navigationItem.titleView = searchController.searchBar
     }
 
     override func viewDidAppear(_ animated: Bool) {

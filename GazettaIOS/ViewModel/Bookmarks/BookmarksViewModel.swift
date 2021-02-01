@@ -15,11 +15,23 @@ class BookmarksViewModel {
         self.databaseService = databaseService
     }
 
-    func getBookmarks(onComplete: @escaping () -> Void) {
-        databaseService.getFromDatabase { [weak self] articles in
+    func refreshBookmarks(
+        onBookmarksLoaded: @escaping () -> Void,
+        onRefreshDone: @escaping () -> Void = {}
+    ) {
+        let refreshQueue = DispatchQueue.global(qos: .utility)
+        refreshQueue.sync { [weak self] in
             guard let self = self else { return }
-            self.bookmarks = articles
-            onComplete()
+            self.getBookmarks {
+                DispatchQueue.main.async {
+                    onBookmarksLoaded()
+                }
+            }
+        }
+        refreshQueue.sync {
+            DispatchQueue.main.async {
+                onRefreshDone()
+            }
         }
     }
 
@@ -39,6 +51,14 @@ class BookmarksViewModel {
 
         let article = dataSet[index]
         return NewsCellViewModel(article: article, delegate: self)
+    }
+
+    private func getBookmarks(onComplete: @escaping () -> Void) {
+        databaseService.getFromDatabase { [weak self] articles in
+            guard let self = self else { return }
+            self.bookmarks = articles
+            onComplete()
+        }
     }
 
     private var databaseService: DatabaseService

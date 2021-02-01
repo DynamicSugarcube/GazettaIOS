@@ -20,6 +20,16 @@ class BookmarksViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
 
+        onBookmarksLoaded = { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.reloadData()
+        }
+
+        onRefreshDone = { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.refreshControl?.endRefreshing()
+        }
+
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -34,9 +44,9 @@ class BookmarksViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.getBookmarks { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.reloadData()
+        guard let onBookmarksLoaded = onBookmarksLoaded else { return }
+        viewModel.refreshBookmarks {
+            onBookmarksLoaded()
         }
     }
 
@@ -70,11 +80,15 @@ class BookmarksViewController: UIViewController {
     }
 
     @objc private func handleRefreshControl() {
-        viewModel.getBookmarks { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.reloadData()
-            self.collectionView.refreshControl?.endRefreshing()
+        guard
+            let onBookmarksLoaded = onBookmarksLoaded,
+            let onRefreshDone = onRefreshDone
+        else {
+            return
         }
+        viewModel.refreshBookmarks(
+            onBookmarksLoaded: onBookmarksLoaded,
+            onRefreshDone: onRefreshDone)
     }
 
     private func filterData(for searchText: String) {
@@ -85,6 +99,9 @@ class BookmarksViewController: UIViewController {
     @IBOutlet private weak var collectionView: UICollectionView!
 
     private var viewModel: BookmarksViewModel!
+
+    private var onBookmarksLoaded: (() -> Void)?
+    private var onRefreshDone: (() -> Void)?
 
     private let searchController = UISearchController(searchResultsController: nil)
     private var isSearchbarEmpty: Bool {

@@ -28,25 +28,37 @@ class DailyNewsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 
-        configureRefreshControl()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        viewModel.getTopStoriesOverNetwork { [weak self] in
+        onTopStoriesLoaded = { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadSections(
                 [self.viewModel.topStoriesSectionId],
                 with: .automatic)
         }
-
-        viewModel.getLatestNewsOverNetwork { [weak self] in
+        onLatestNewsLoaded = { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadSections(
                 [self.viewModel.latestNewsSectionId],
                 with: .automatic)
         }
+        onRefreshDone = { [weak self] in
+            guard let self = self else { return }
+            self.tableView.refreshControl?.endRefreshing()
+        }
+
+        configureRefreshControl()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard
+            let onTopStoriesLoaded = onTopStoriesLoaded,
+            let onLatestNewsLoaded = onLatestNewsLoaded
+        else {
+            return
+        }
+        viewModel.refreshDailyNews(
+            onTopStroiesLoaded: onTopStoriesLoaded,
+            onLatestNewsLoaded: onLatestNewsLoaded)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -77,28 +89,26 @@ class DailyNewsViewController: UIViewController {
     }
 
     @objc private func handleRefreshControl() {
-        viewModel.getTopStoriesOverNetwork { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadSections(
-                [self.viewModel.topStoriesSectionId],
-                with: .automatic)
-            // TODO: endRefreshing() should be called once for 2 closures
-            self.tableView.refreshControl?.endRefreshing()
+        guard
+            let onTopStoriesLoaded = onTopStoriesLoaded,
+            let onLatestNewsLoaded = onLatestNewsLoaded,
+            let onRefreshDone = onRefreshDone
+        else {
+            return
         }
-
-        viewModel.getLatestNewsOverNetwork { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadSections(
-                [self.viewModel.latestNewsSectionId],
-                with: .automatic)
-            // TODO: endRefreshing() should be called once for 2 closures
-            self.tableView.refreshControl?.endRefreshing()
-        }
+        viewModel.refreshDailyNews(
+            onTopStroiesLoaded: onTopStoriesLoaded,
+            onLatestNewsLoaded: onLatestNewsLoaded,
+            onRefreshDone: onRefreshDone)
     }
 
     @IBOutlet private weak var tableView: UITableView!
 
     private var viewModel: DailyNewsViewModel!
+
+    private var onTopStoriesLoaded: (() -> Void)?
+    private var onLatestNewsLoaded: (() -> Void)?
+    private var onRefreshDone: (() -> Void)?
 }
 
 // MARK: - UITableViewDelegate

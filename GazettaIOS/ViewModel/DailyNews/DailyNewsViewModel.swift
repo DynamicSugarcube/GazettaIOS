@@ -45,22 +45,31 @@ class DailyNewsViewModel {
         return (tableSection.sectionName, tableSection.sectionButtonLabel)
     }
 
-    func getTopStoriesOverNetwork(onComplete: @escaping () -> Void) {
-        let request = TopStoriesRequest(country: .usa)
-        networkService.getNewsArticles(on: request) { [weak self] articles in
+    func refreshDailyNews(
+        onTopStroiesLoaded: @escaping () -> Void,
+        onLatestNewsLoaded: @escaping () -> Void,
+        onRefreshDone: @escaping () -> Void = {}
+    ) {
+        let refreshGroup = DispatchGroup()
+        let refreshQueue = DispatchQueue.global(qos: .utility)
+        refreshQueue.async(group: refreshGroup) { [weak self] in
             guard let self = self else { return }
-            self.topStories = articles
-            onComplete()
+            self.getTopStoriesOverNetwork {
+                DispatchQueue.main.async {
+                    onTopStroiesLoaded()
+                }
+            }
         }
-    }
-
-    func getLatestNewsOverNetwork(onComplete: @escaping () -> Void) {
-        // TODO: Change request
-        let request = TopStoriesRequest(country: .usa)
-        networkService.getNewsArticles(on: request) { [weak self] articles in
+        refreshQueue.async(group: refreshGroup) { [weak self] in
             guard let self = self else { return }
-            self.latestNews = articles
-            onComplete()
+            self.getLatestNewsOverNetwork {
+                DispatchQueue.main.async {
+                    onLatestNewsLoaded()
+                }
+            }
+        }
+        refreshGroup.notify(queue: DispatchQueue.main) {
+            onRefreshDone()
         }
     }
 
@@ -80,6 +89,25 @@ class DailyNewsViewModel {
         }
         let article = latestNews[index]
         return NewsCellViewModel(article: article, delegate: self)
+    }
+
+    private func getTopStoriesOverNetwork(onComplete: @escaping () -> Void) {
+        let request = TopStoriesRequest(country: .usa)
+        networkService.getNewsArticles(on: request) { [weak self] articles in
+            guard let self = self else { return }
+            self.topStories = articles
+            onComplete()
+        }
+    }
+
+    private func getLatestNewsOverNetwork(onComplete: @escaping () -> Void) {
+        // TODO: Change request
+        let request = TopStoriesRequest(country: .usa)
+        networkService.getNewsArticles(on: request) { [weak self] articles in
+            guard let self = self else { return }
+            self.latestNews = articles
+            onComplete()
+        }
     }
 
     private var networkService: NetworkService

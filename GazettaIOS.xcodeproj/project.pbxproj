@@ -51,6 +51,7 @@
 		A97955B925BEE1FE00005AF5 /* NewsTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97955B825BEE1FE00005AF5 /* NewsTableCellViewModel.swift */; };
 		A97955C025BF031900005AF5 /* BookmarksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97955BF25BF031900005AF5 /* BookmarksViewModel.swift */; };
 		A97955C825BF057700005AF5 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97955C725BF057700005AF5 /* BookmarksViewController.swift */; };
+		A9C6062525C822DE000B67E9 /* Shareable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6062425C822DE000B67E9 /* Shareable.swift */; };
 		A9CADE1325B03CB50045EDBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CADE1225B03CB50045EDBB /* AppDelegate.swift */; };
 		A9CADE1525B03CB50045EDBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CADE1425B03CB50045EDBB /* SceneDelegate.swift */; };
 		A9CADE1A25B03CB50045EDBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CADE1825B03CB50045EDBB /* Main.storyboard */; };
@@ -120,6 +121,7 @@
 		A97955B825BEE1FE00005AF5 /* NewsTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableCellViewModel.swift; sourceTree = "<group>"; };
 		A97955BF25BF031900005AF5 /* BookmarksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewModel.swift; sourceTree = "<group>"; };
 		A97955C725BF057700005AF5 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
+		A9C6062425C822DE000B67E9 /* Shareable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shareable.swift; sourceTree = "<group>"; };
 		A9CADE0F25B03CB50045EDBB /* GazettaIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GazettaIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CADE1225B03CB50045EDBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9CADE1425B03CB50045EDBB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 			children = (
 				A951115925B70B3100B33DD7 /* ViewCellIdentifiable.swift */,
 				A94072D325C046EB0051DF71 /* ViewCellResources.swift */,
+				A9C6062425C822DE000B67E9 /* Shareable.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -666,6 +669,7 @@
 				A94072BE25C025DF0051DF71 /* DailyNewsViewModel.swift in Sources */,
 				A951115125B701D000B33DD7 /* LatestNewsTableViewCell.swift in Sources */,
 				A932F3FE25B9A71A0080DE75 /* NetworkServiceImpl.swift in Sources */,
+				A9C6062525C822DE000B67E9 /* Shareable.swift in Sources */,
 				A960C95725BD9E3D002C9C31 /* DatabaseService.swift in Sources */,
 				A97955C025BF031900005AF5 /* BookmarksViewModel.swift in Sources */,
 				A94D2F7B25C2C5AF00826404 /* SearchViewController.swift in Sources */,

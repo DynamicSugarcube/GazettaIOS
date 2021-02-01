@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DailyNewsTableViewCell: UITableViewCell {
+class DailyNewsTableViewCell: UITableViewCell, Shareable {
     var viewModel: NewsCellViewModel? {
         didSet {
             if let article = viewModel?.article {
@@ -15,6 +15,8 @@ class DailyNewsTableViewCell: UITableViewCell {
             }
         }
     }
+
+    weak var presenter: UIViewController?
 
     @IBAction private func onBookmarksPressed() {
         guard let viewModel = self.viewModel else { return }
@@ -27,6 +29,16 @@ class DailyNewsTableViewCell: UITableViewCell {
                 bookmarkButton.setImage(ViewCellResources.bookmarkFillImage, for: .normal)
             }
         }
+    }
+
+    @IBAction private func onSendPressed() {
+        guard
+            let article = viewModel?.article,
+            let presenter = presenter
+        else {
+            return
+        }
+        share(article: article, presenter: presenter)
     }
 
     private func update(with article: NewsArticle) {

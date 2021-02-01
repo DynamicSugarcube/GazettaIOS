@@ -175,6 +175,7 @@ extension DailyNewsViewController: UITableViewDataSource {
 
         if let newsCell = cell as? DailyNewsTableViewCell {
             newsCell.viewModel = cellViewModel
+            newsCell.presenter = self
         }
         return cell
     }

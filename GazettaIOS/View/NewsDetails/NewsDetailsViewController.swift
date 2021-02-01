@@ -8,11 +8,17 @@
 import UIKit
 import WebKit
 
-class NewsDetailsViewController: UIViewController, WKUIDelegate {
+class NewsDetailsViewController: UIViewController, WKUIDelegate, Shareable {
     var data: NewsArticle?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let shareButton = UIBarButtonItem(
+            barButtonSystemItem: .action,
+            target: self,
+            action: #selector(share))
+        navigationItem.rightBarButtonItem = shareButton
 
         webView.uiDelegate = self
 
@@ -29,6 +35,13 @@ class NewsDetailsViewController: UIViewController, WKUIDelegate {
         }
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+
+    @objc private func share() {
+        guard let article = data else {
+            return
+        }
+        share(article: article, presenter: self)
     }
 
     @IBOutlet private weak var webView: WKWebView!

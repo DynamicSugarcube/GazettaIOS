@@ -7,13 +7,25 @@
 
 import UIKit
 
-class BookmarksCollectionViewCell: UICollectionViewCell {
+class BookmarksCollectionViewCell: UICollectionViewCell, Shareable {
     var viewModel: NewsCellViewModel? {
         didSet {
             if let article = viewModel?.article {
                 update(with: article)
             }
         }
+    }
+
+    weak var presenter: UIViewController?
+
+    @IBAction private func onSendPressed() {
+        guard
+            let article = viewModel?.article,
+            let presenter = presenter
+        else {
+            return
+        }
+        share(article: article, presenter: presenter)
     }
 
     @IBAction private func onBookmarkButtonPressed() {

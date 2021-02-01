@@ -72,6 +72,9 @@
                                 <state key="normal">
                                     <imageReference key="image" image="paperplane" catalog="system" renderingMode="original"/>
                                 </state>
+                                <connections>
+                                    <action selector="onSendPressed" destination="gTV-IL-0wX" eventType="touchDown" id="kYk-5S-SE4"/>
+                                </connections>
                             </button>
                         </subviews>
                     </stackView>

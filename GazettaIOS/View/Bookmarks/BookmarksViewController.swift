@@ -141,6 +141,7 @@ extension BookmarksViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.viewModel = cellViewModel
+        cell.presenter = self
         return cell
     }
 }

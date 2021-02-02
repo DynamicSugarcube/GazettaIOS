@@ -20,6 +20,14 @@ class DailyNewsTableViewCell: UITableViewCell, Shareable {
 
     @IBAction private func onBookmarksPressed() {
         guard let viewModel = self.viewModel else { return }
+
+        let (animation, completion) = AnimationProvider
+            .buildRotationAnimations(for: bookmarkButton)
+        UIView.animate(
+            withDuration: AnimationProvider.animationDuration,
+            animations: animation,
+            completion: completion)
+
         if viewModel.isArticleBookmarked {
             if viewModel.removeFromBookmarks() {
                 bookmarkButton.setImage(ViewCellResources.bookmarkImage, for: .normal)
@@ -38,6 +46,14 @@ class DailyNewsTableViewCell: UITableViewCell, Shareable {
         else {
             return
         }
+
+        let (animation, completion) = AnimationProvider
+            .buildRotationAnimations(for: sendButton)
+        UIView.animate(
+            withDuration: AnimationProvider.animationDuration,
+            animations: animation,
+            completion: completion)
+
         share(article: article, presenter: presenter)
     }
 
@@ -76,4 +92,5 @@ class DailyNewsTableViewCell: UITableViewCell, Shareable {
     @IBOutlet private weak var newsImage: UIImageView!
     @IBOutlet private weak var newsPublisherAndDateLabel: UILabel!
     @IBOutlet private weak var bookmarkButton: UIButton!
+    @IBOutlet private weak var sendButton: UIButton!
 }

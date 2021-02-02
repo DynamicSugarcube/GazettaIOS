@@ -104,6 +104,7 @@
                 <outlet property="newsImage" destination="2xc-BW-amz" id="j8b-cg-Y42"/>
                 <outlet property="newsLabel" destination="c6X-jC-GJ7" id="NTJ-e4-wbM"/>
                 <outlet property="newsPublisherAndDateLabel" destination="Ozx-rg-exe" id="den-za-eHF"/>
+                <outlet property="sendButton" destination="Zub-o5-whN" id="QBU-zX-eg8"/>
             </connections>
             <point key="canvasLocation" x="37.681159420289859" y="110.49107142857143"/>
         </tableViewCell>

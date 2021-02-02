@@ -112,6 +112,7 @@
                 <outlet property="newsImage" destination="qCN-sK-2o4" id="RMD-sQ-jeA"/>
                 <outlet property="newsPublisher" destination="sfO-xi-rpf" id="O7o-DE-TJj"/>
                 <outlet property="newsTitle" destination="VaT-to-la8" id="raG-lU-2T7"/>
+                <outlet property="sendButton" destination="IeS-Bd-haF" id="iCd-ux-6Fw"/>
             </connections>
             <point key="canvasLocation" x="230.43478260869566" y="106.47321428571428"/>
         </collectionViewCell>

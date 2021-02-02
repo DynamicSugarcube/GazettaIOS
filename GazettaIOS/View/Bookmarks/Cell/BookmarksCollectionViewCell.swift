@@ -25,11 +25,27 @@ class BookmarksCollectionViewCell: UICollectionViewCell, Shareable {
         else {
             return
         }
+
+        let (animation, completion) = AnimationProvider
+            .buildRotationAnimations(for: sendButton)
+        UIView.animate(
+            withDuration: AnimationProvider.animationDuration,
+            animations: animation,
+            completion: completion)
+
         share(article: article, presenter: presenter)
     }
 
     @IBAction private func onBookmarkButtonPressed() {
         guard let viewModel = self.viewModel else { return }
+
+        let (animation, completion) = AnimationProvider
+            .buildRotationAnimations(for: bookmarkButton)
+        UIView.animate(
+            withDuration: AnimationProvider.animationDuration,
+            animations: animation,
+            completion: completion)
+
         if viewModel.isArticleBookmarked {
             if viewModel.removeFromBookmarks() {
                 bookmarkButton.setImage(ViewCellResources.bookmarkImage, for: .normal)
@@ -78,6 +94,7 @@ class BookmarksCollectionViewCell: UICollectionViewCell, Shareable {
     @IBOutlet private weak var newsPublisher: UILabel!
     @IBOutlet private weak var newsDate: UILabel!
     @IBOutlet private weak var bookmarkButton: UIButton!
+    @IBOutlet private weak var sendButton: UIButton!
 }
 
 // MARK: - ViewCellIdentifiable

@@ -53,22 +53,22 @@ class DailyNewsViewModel {
         let refreshGroup = DispatchGroup()
         let refreshQueue = DispatchQueue.global(qos: .utility)
         refreshQueue.async(group: refreshGroup) { [weak self] in
+            refreshGroup.enter()
             guard let self = self else { return }
             self.getTopStoriesOverNetwork {
-                DispatchQueue.main.async {
-                    onTopStroiesLoaded()
-                }
+                onTopStroiesLoaded()
+                refreshGroup.leave()
             }
         }
         refreshQueue.async(group: refreshGroup) { [weak self] in
+            refreshGroup.enter()
             guard let self = self else { return }
             self.getLatestNewsOverNetwork {
-                DispatchQueue.main.async {
-                    onLatestNewsLoaded()
-                }
+                onLatestNewsLoaded()
+                refreshGroup.leave()
             }
         }
-        refreshGroup.notify(queue: DispatchQueue.main) {
+        refreshGroup.notify(queue: .main) {
             onRefreshDone()
         }
     }

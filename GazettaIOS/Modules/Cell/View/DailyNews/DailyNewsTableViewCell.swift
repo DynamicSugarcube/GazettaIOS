@@ -21,12 +21,11 @@ class DailyNewsTableViewCell: UITableViewCell, Shareable {
     @IBAction private func onBookmarksPressed() {
         guard let viewModel = self.viewModel else { return }
 
-        let (animation, completion) = AnimationProvider
-            .buildRotationAnimations(for: bookmarkButton)
+        let animation = AnimationProvider.buildRotationAnimation(for: bookmarkButton)
         UIView.animate(
             withDuration: AnimationProvider.animationDuration,
             animations: animation,
-            completion: completion)
+            completion: nil)
 
         if viewModel.isArticleBookmarked {
             if viewModel.removeFromBookmarks() {
@@ -47,12 +46,11 @@ class DailyNewsTableViewCell: UITableViewCell, Shareable {
             return
         }
 
-        let (animation, completion) = AnimationProvider
-            .buildRotationAnimations(for: sendButton)
+        let animation = AnimationProvider.buildRotationAnimation(for: sendButton)
         UIView.animate(
             withDuration: AnimationProvider.animationDuration,
             animations: animation,
-            completion: completion)
+            completion: nil)
 
         share(article: article, presenter: presenter)
     }

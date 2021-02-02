@@ -8,17 +8,12 @@
 import UIKit
 
 class AnimationProvider {
-    static let animationDuration = 0.25
+    static let animationDuration = 0.6
 
-    static func buildRotationAnimations(for view: UIView) -> (animation: () -> Void, completion: (Bool) -> Void) {
-        let animation = {
+    static func buildRotationAnimation(for view: UIView) -> () -> Void {
+        return {
             view.transform = CGAffineTransform(rotationAngle: .pi)
+            view.transform = CGAffineTransform.identity
         }
-        let completion: (Bool) -> Void = { _ in
-            UIView.animate(withDuration: animationDuration) {
-                view.transform = CGAffineTransform.identity
-            }
-        }
-        return (animation, completion)
     }
 }

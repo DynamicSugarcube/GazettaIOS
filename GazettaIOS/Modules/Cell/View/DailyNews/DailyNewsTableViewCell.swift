@@ -71,7 +71,7 @@ class DailyNewsTableViewCell: UITableViewCell, Shareable {
         dateFormatter.dateStyle = .short
 
         newsLabel.text = title
-        newsPublisherAndDateLabel.text = "\(publisher) • \(date)"
+        newsPublisherAndDateLabel.text = "\(publisher) • \(dateFormatter.string(from: date))"
 
         if let url = article.imageUrl {
             UIImage.load(from: url) { [weak self] image in

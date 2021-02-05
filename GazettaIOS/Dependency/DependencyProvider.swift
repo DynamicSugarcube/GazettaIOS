@@ -16,9 +16,6 @@ class DependencyProvider {
         container.register(DailyNewsViewModel.self) { _ in
             DailyNewsViewModel(networkService: networkService, databaseService: databaseService)
         }.inObjectScope(.container)
-        container.register(BookmarksViewModel.self) { _ in
-            BookmarksViewModel(databaseService: databaseService)
-        }.inObjectScope(.container)
         container.register(SearchViewModel.self) { _ in
             SearchViewModel(networkService: networkService)
         }.inObjectScope(.container)
@@ -30,12 +27,13 @@ class DependencyProvider {
         return sharedContainer.resolve(DailyNewsViewModel.self)
     }
 
-    static func getBookmarksViewModel() -> BookmarksViewModel! {
-        return sharedContainer.resolve(BookmarksViewModel.self)
-    }
-
     static func getSearchViewModel() -> SearchViewModel! {
         return sharedContainer.resolve(SearchViewModel.self)
+    }
+
+    // TODO: Remove
+    static func getDatabaseService() -> DatabaseService {
+        databaseService
     }
 
     private static var networkService = NetworkServiceImpl()

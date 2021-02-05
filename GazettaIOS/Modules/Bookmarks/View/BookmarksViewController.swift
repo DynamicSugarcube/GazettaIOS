@@ -8,10 +8,12 @@
 import UIKit
 
 class BookmarksViewController: UIViewController {
+    var presenter: BookmarksPresenter?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel = DependencyProvider.getBookmarksViewModel()
+        BookmarksConfigurator.configure(with: self)
 
         collectionView.register(
             BookmarksCollectionViewCell.nib,
@@ -19,16 +21,6 @@ class BookmarksViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
-
-        onBookmarksLoaded = { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.reloadData()
-        }
-
-        onRefreshDone = { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.refreshControl?.endRefreshing()
-        }
 
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -44,10 +36,7 @@ class BookmarksViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let onBookmarksLoaded = onBookmarksLoaded else { return }
-        viewModel.refreshBookmarks {
-            onBookmarksLoaded()
-        }
+        loadBookmarks()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,16 +44,19 @@ class BookmarksViewController: UIViewController {
         searchController.isActive = false
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard
-            segue.identifier == viewModel.showNewsDetailsSegueId,
-            let cell = sender as? BookmarksCollectionViewCell,
-            let controller = segue.destination as? NewsDetailsViewController
-        else {
-            print("Couldn't prepare for segue")
-            return
+    func loadBookmarks() {
+        presenter?.loadBookmarks(searchText: nil)
+    }
+
+    func filterBookmarks(for searchText: String) {
+        presenter?.loadBookmarks(searchText: searchText)
+    }
+
+    func onBookmarksLoaded() {
+        if collectionView.refreshControl?.isRefreshing == true {
+            collectionView.refreshControl?.endRefreshing()
         }
-        controller.data = cell.viewModel?.article
+        collectionView.reloadData()
     }
 
     private func configureRefreshControl() {
@@ -80,50 +72,39 @@ class BookmarksViewController: UIViewController {
     }
 
     @objc private func handleRefreshControl() {
-        guard
-            let onBookmarksLoaded = onBookmarksLoaded,
-            let onRefreshDone = onRefreshDone
-        else {
-            return
-        }
-        viewModel.refreshBookmarks(
-            onBookmarksLoaded: onBookmarksLoaded,
-            onRefreshDone: onRefreshDone)
-    }
-
-    private func filterData(for searchText: String) {
-        viewModel.filterBookmarks(for: searchText)
-        collectionView.reloadData()
+        loadBookmarks()
     }
 
     @IBOutlet private weak var collectionView: UICollectionView!
 
-    private var viewModel: BookmarksViewModel!
-
-    private var onBookmarksLoaded: (() -> Void)?
-    private var onRefreshDone: (() -> Void)?
+    private var viewModel = BookmarksViewModel()
 
     private let searchController = UISearchController(searchResultsController: nil)
-    private var isSearchbarEmpty: Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
     private var isFiltering: Bool {
-        return searchController.isActive && !isSearchbarEmpty
+        let isSearchBarEmpty = searchController.searchBar.text?.isEmpty ?? true
+        return searchController.isActive && !isSearchBarEmpty
+    }
+}
+
+// MARK: - BooksmarksPresenterOutputProtocol
+extension BookmarksViewController: BooksmarksPresenterOutputProtocol {
+    func didLoadBookmarks(_ bookmarks: [NewsArticle]) {
+        viewModel.bookmarks = bookmarks
+        collectionView.reloadData()
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension BookmarksViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        performSegue(withIdentifier: viewModel.showNewsDetailsSegueId, sender: cell)
+        presenter?.onClickCell(at: indexPath.row, isFiltering: isFiltering)
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension BookmarksViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        isFiltering ? viewModel.filteredBookmarks.count : viewModel.bookmarks.count
+        viewModel.bookmarks.count
     }
 
     func collectionView(
@@ -133,9 +114,8 @@ extension BookmarksViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: BookmarksCollectionViewCell.identifier,
                 for: indexPath) as? BookmarksCollectionViewCell,
-            let cellViewModel = viewModel.createViewModelForCell(
-                indexOfArticle: indexPath.row,
-                isFiltering: isFiltering)
+            let delegate = presenter?.interactor as? BookmarksDelegate,
+            let cellViewModel = viewModel.createViewModel(forCellAt: indexPath.row, delegate: delegate)
         else {
             print("Couldn't create table cell")
             return UICollectionViewCell()
@@ -151,7 +131,7 @@ extension BookmarksViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         if let text = searchBar.text {
-            filterData(for: text)
+            filterBookmarks(for: text)
         }
     }
 }
